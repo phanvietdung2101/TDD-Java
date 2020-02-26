@@ -26,5 +26,9 @@ class ClassifyingTrianglesTest {
             assertEquals(expect[i], result);
         }
     }
+    @Test
+    void test1() {
+        assertTrue(2 > 1);
+    }
 
 }

@@ -2,26 +2,57 @@ package APJCaculator;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 
 public class NextDayCalculator {
-    public static String nextDayCalculator(int inputDay,int inputMonth,int inputYear){
-        Calendar date = Calendar.getInstance();
-//        date.set(inputYear,inputMonth,inputDay);
-        date.set(Calendar.YEAR, inputYear);
-        date.set(Calendar.MONTH, inputMonth);
-        date.set(Calendar.DATE, inputDay);
-        System.out.println(date.get(Calendar.DATE) + "-" + date.get(Calendar.MONTH) + "-" + date.get(Calendar.YEAR));
-        date.add(Calendar.DATE, 1);
-        return date.get(Calendar.DATE) + "-" + date.get(Calendar.MONTH) + "-" + date.get(Calendar.YEAR);
+    public static String nextDayCalculator(int inputDate, int inputMonth, int inputYear) {
+        int outputDate, outputMonth, outputYear;
+        outputDate = inputDate;
+        outputMonth = inputMonth;
+        outputYear = inputYear;
+
+        boolean isInputValid = isInputDateValid(inputDate,inputMonth,inputYear);
+        if(!isInputValid)
+            return "Invalid input";
+
+        int daysOfMonth;
+        if(isMonthWith31Day(inputMonth))
+            daysOfMonth = 31;
+        else if(isMonthWith30Day(inputMonth))
+            daysOfMonth = 30;
+        else if(inputMonth == 2){
+            if(isLeapYear(inputYear))
+                daysOfMonth = 29;
+            else
+                daysOfMonth = 28;
+        } else {
+            return "Invalid input";
+        }
+
+
+
+        boolean isLastDayOfYear = inputMonth == 12 && inputDate == daysOfMonth;
+        boolean isLastDayOfMonth = inputDate == daysOfMonth;
+        if(isLastDayOfYear){
+            outputDate = 1;
+            outputMonth = 1;
+            outputYear += 1;
+        } else if (isLastDayOfMonth){
+            outputDate = 1;
+            outputMonth += 1;
+        } else
+            outputDate += 1;
+
+        return outputDate + "-" + outputMonth + "-" + outputYear;
     }
 
-    public static boolean isLeapYear(int year){
+    public static boolean isLeapYear ( int year){
         boolean isDivineByFour = year % 4 == 0;
-        if(isDivineByFour){
+        if (isDivineByFour) {
             boolean isDivineByAHundred = year % 100 == 0;
-            if(isDivineByAHundred){
+            if (isDivineByAHundred) {
                 boolean isDivineByFourHundred = year % 400 == 0;
-                if(isDivineByFourHundred){
+                if (isDivineByFourHundred) {
                     return true;
                 } else
                     return false;
@@ -31,26 +62,36 @@ public class NextDayCalculator {
             return false;
     }
 
-    public static String test() {
-        String dt = "2008-02-29";  // Start date
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar c = Calendar.getInstance();
-        try {
-            c.setTime(sdf.parse(dt));
-        } catch (ParseException e) {
-            e.printStackTrace();
+    public static boolean isMonthWith31Day(int month){
+        int[] monthWith31Days = new int[]{1,3,5,7,8,10,12};
+        for(int element : monthWith31Days) {
+            if(element == month)
+                return true;
         }
-        c.add(Calendar.DATE, 1);  // number of days to add
-        dt = sdf.format(c.getTime());  // dt is now the new date
-        return dt;
+        return false;
     }
 
-    public static void main(String[] args) {
-        System.out.println(nextDayCalculator(31,1,2020));
-        System.out.println(nextDayCalculator(29,1,2019));
-        System.out.println(nextDayCalculator(15,1,2019));
-        System.out.println(nextDayCalculator(31,3,2019));
-        System.out.println(test());
-
+    public static boolean isMonthWith30Day(int month){
+        int[] monthWith30Days = new int[]{4, 6, 9, 11};
+        for(int element : monthWith30Days) {
+            if(element == month)
+                return true;
+        }
+        return false;
     }
+
+    public static boolean isInputDateValid(int date, int month, int year){
+        if(date < 0 || date > 31)
+            return false;
+        if(month < 0 || month > 12)
+            return false;
+        if(year < 0 )
+            return false;
+        return true;
+    }
+
+//    public static int daysOfMonth(int month){
+//
+//    }
+
 }

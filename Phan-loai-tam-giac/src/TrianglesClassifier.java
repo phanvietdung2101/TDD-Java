@@ -17,15 +17,15 @@ public class TrianglesClassifier {
     }
 
     private static boolean isTriangle(int sideA, int sideB, int sideC){
-        boolean isSideGreaterThanZero = sideA > 0 && sideB > 0 && sideC > 0;
+//        boolean isSideGreaterThanZero = sideA > 0 && sideB > 0 && sideC > 0;
         int sumOfAB = sideA + sideB;
         int sumOfAC = sideA + sideC;
         int sumOfBC = sideB + sideC;
 
 
-        if(isSideGreaterThanZero == false)
-            return false;
-        else if (sumOfAB <= sideC)
+//        if(isSideGreaterThanZero == false)
+//            return false;
+        if (sumOfAB <= sideC)
             return false;
         else if (sumOfAC <= sideB)
             return false;
